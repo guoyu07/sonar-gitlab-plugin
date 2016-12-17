@@ -102,6 +102,14 @@ public class MarkDownUtils {
         return SEVERITY_EMOJI_MAPPINGS.getOrDefault(severity, ":grey_question:");
     }
 
+    /**
+     * Format a rule violation for display inline with other information.
+     *
+     * @param severity
+     * @param message
+     * @param ruleKey
+     * @return
+     */
     public String inlineIssue(String severity, String message, String ruleKey) {
         String ruleLink = getRuleLink(ruleKey);
         StringBuilder sb = new StringBuilder();

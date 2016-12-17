@@ -98,6 +98,17 @@ public class MarkDownUtilsTest {
     }
 
     @Test
+    public void testBuildsInlineIssueMarkdownCorrectly() {
+        final Settings settings = new Settings();
+        settings.setProperty("sonar.core.serverBaseURL", "http://www.jsherz.com/40404");
+
+        final MarkDownUtils markDownUtils = new MarkDownUtils(settings);
+
+        assertThat(markDownUtils.inlineIssue(Severity.INFO, "Your code is bad.", "bad_code"))
+                .isEqualTo(":information_source: Your code is bad. [:blue_book:](http://www.jsherz.com/40404/coding_rules#rule_key=bad_code)");
+    }
+
+    @Test
     public void testBuildsCorrectRuleLink() {
         final Settings settings = new Settings();
         settings.setProperty("sonar.core.serverBaseURL", "http://www.sonarz.io/kewl-sonar");
