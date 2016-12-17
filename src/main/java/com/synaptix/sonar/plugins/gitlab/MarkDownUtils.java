@@ -126,7 +126,17 @@ public class MarkDownUtils {
         return sb.toString();
     }
 
+    /**
+     * Get a markdown link to the coding rule with the supplied key.
+     *
+     * @param ruleKey
+     * @return
+     */
     public String getRuleLink(String ruleKey) {
+        if (ruleKey == null) {
+            throw new IllegalArgumentException("ruleKey must not be null");
+        }
+
         return "[:blue_book:](" + ruleUrlPrefix + "coding_rules#rule_key=" + encodeForUrl(ruleKey) + ")";
     }
 

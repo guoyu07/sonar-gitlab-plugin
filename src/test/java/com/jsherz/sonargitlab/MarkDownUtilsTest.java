@@ -97,4 +97,27 @@ public class MarkDownUtilsTest {
                         .isEqualTo(":grey_question:"));
     }
 
+    @Test
+    public void testBuildsCorrectRuleLink() {
+        final Settings settings = new Settings();
+        settings.setProperty("sonar.core.serverBaseURL", "http://www.sonarz.io/kewl-sonar");
+
+        final MarkDownUtils markDownUtils = new MarkDownUtils(settings);
+
+        assertThat(markDownUtils.getRuleLink("rule$_r0ck"))
+                .isEqualTo("[:blue_book:](http://www.sonarz.io/kewl-sonar/coding_rules#rule_key=rule%24_r0ck)");
+    }
+
+    @Test
+    public void testThrowsIllegalArgsIfRuleLinkKeyEmpty() {
+        final Settings settings = new Settings();
+        settings.setProperty("sonar.core.serverBaseURL", "http://www.ilovebourbons.org/");
+
+        final MarkDownUtils markDownUtils = new MarkDownUtils(settings);
+
+        assertThatThrownBy(() -> markDownUtils.getRuleLink(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("ruleKey must not be null");
+    }
+
 }
