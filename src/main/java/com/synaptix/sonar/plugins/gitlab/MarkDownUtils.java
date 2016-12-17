@@ -120,7 +120,18 @@ public class MarkDownUtils {
         return String.format("%s %s %s", getEmojiForSeverity(severity), message, ruleLink);
     }
 
-    public String globalIssue(String severity, String message, String ruleKey, @Nullable String url, String componentKey) {
+    /**
+     * Build an entry for the global issues / rule violations comment.
+     *
+     * @param severity
+     * @param message
+     * @param ruleKey
+     * @param url
+     * @param componentKey
+     * @return
+     */
+    public String globalIssue(final String severity, final String message, final String ruleKey,
+                              final @Nullable String url, final String componentKey) {
         String ruleLink = getRuleLink(ruleKey);
         StringBuilder sb = new StringBuilder();
         sb.append(getEmojiForSeverity(severity)).append(" ");

@@ -123,6 +123,24 @@ public class MarkDownUtilsTest {
     }
 
     @Test
+    public void testBuildsGlobalMarkdownWithUrlCorrectly() {
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("https://localhost:8443/sonar");
+
+        assertThat(markDownUtils.globalIssue(Severity.MAJOR, "This is a violation.", "vio_lation",
+                "https://great.local", "com.major.mess"))
+                .isEqualTo(":warning: [This is a violation.](https://great.local) [:blue_book:](https://localhost:8443/sonar/coding_rules#rule_key=vio_lation)");
+    }
+
+    @Test
+    public void testBuildsGlobalMarkdownWithoutUrlCorrectly() {
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("https://DCONTROL/quality");
+
+        assertThat(markDownUtils.globalIssue(Severity.BLOCKER, "NO COMPUTRONS!!!", "magic_sash",
+                null, "com.major.mess"))
+                .isEqualTo(":no_entry: NO COMPUTRONS!!! (com.major.mess) [:blue_book:](https://DCONTROL/quality/coding_rules#rule_key=magic_sash)");
+    }
+
+    @Test
     public void testBuildsCorrectRuleLink() {
         final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.sonarz.io/kewl-sonar");
 
