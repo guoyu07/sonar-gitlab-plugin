@@ -99,10 +99,7 @@ public class MarkDownUtilsTest {
 
     @Test
     public void testBuildsInlineIssueMarkdownCorrectly() {
-        final Settings settings = new Settings();
-        settings.setProperty("sonar.core.serverBaseURL", "http://www.jsherz.com/40404");
-
-        final MarkDownUtils markDownUtils = new MarkDownUtils(settings);
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.jsherz.com/40404");
 
         assertThat(markDownUtils.inlineIssue(Severity.INFO, "Your code is bad.", "bad_code"))
                 .isEqualTo(":information_source: Your code is bad. [:blue_book:](http://www.jsherz.com/40404/coding_rules#rule_key=bad_code)");
@@ -110,10 +107,7 @@ public class MarkDownUtilsTest {
 
     @Test
     public void testBuildsCorrectRuleLink() {
-        final Settings settings = new Settings();
-        settings.setProperty("sonar.core.serverBaseURL", "http://www.sonarz.io/kewl-sonar");
-
-        final MarkDownUtils markDownUtils = new MarkDownUtils(settings);
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.sonarz.io/kewl-sonar");
 
         assertThat(markDownUtils.getRuleLink("rule$_r0ck"))
                 .isEqualTo("[:blue_book:](http://www.sonarz.io/kewl-sonar/coding_rules#rule_key=rule%24_r0ck)");
@@ -121,14 +115,18 @@ public class MarkDownUtilsTest {
 
     @Test
     public void testThrowsIllegalArgsIfRuleLinkKeyEmpty() {
-        final Settings settings = new Settings();
-        settings.setProperty("sonar.core.serverBaseURL", "http://www.ilovebourbons.org/");
-
-        final MarkDownUtils markDownUtils = new MarkDownUtils(settings);
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.ilovebourbons.org/");
 
         assertThatThrownBy(() -> markDownUtils.getRuleLink(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("ruleKey must not be null");
+    }
+
+    private MarkDownUtils buildUtilsWithBaseUrl(final String baseUrl) {
+        final Settings settings = new Settings();
+        settings.setProperty("sonar.core.serverBaseURL", baseUrl);
+
+        return new MarkDownUtils(settings);
     }
 
 }
