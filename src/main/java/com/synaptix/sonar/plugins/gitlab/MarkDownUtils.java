@@ -32,6 +32,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
 @BatchSide
@@ -57,9 +59,7 @@ public class MarkDownUtils {
      * @param settings
      */
     public MarkDownUtils(final Settings settings) {
-        if (settings == null) {
-            throw new IllegalArgumentException("settings must not be null");
-        }
+        checkNotNull(settings, "settings must not be null");
 
         // If server base URL was not configured in SQ server then is is better to take URL configured on batch side
         final String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ?
@@ -110,15 +110,14 @@ public class MarkDownUtils {
      * @param ruleKey
      * @return
      */
-    public String inlineIssue(String severity, String message, String ruleKey) {
-        String ruleLink = getRuleLink(ruleKey);
-        StringBuilder sb = new StringBuilder();
-        sb.append(getEmojiForSeverity(severity))
-                .append(" ")
-                .append(message)
-                .append(" ")
-                .append(ruleLink);
-        return sb.toString();
+    public String inlineIssue(final String severity, final String message, final String ruleKey) {
+        checkNotNull(severity, "severity must not be null");
+        checkNotNull(message, "message must not be null");
+        checkNotNull(ruleKey, "ruleKey must not be null");
+
+        final String ruleLink = getRuleLink(ruleKey);
+
+        return String.format("%s %s %s", getEmojiForSeverity(severity), message, ruleLink);
     }
 
     public String globalIssue(String severity, String message, String ruleKey, @Nullable String url, String componentKey) {
@@ -141,9 +140,7 @@ public class MarkDownUtils {
      * @return
      */
     public String getRuleLink(String ruleKey) {
-        if (ruleKey == null) {
-            throw new IllegalArgumentException("ruleKey must not be null");
-        }
+        checkNotNull(ruleKey, "ruleKey must not be null");
 
         return "[:blue_book:](" + ruleUrlPrefix + "coding_rules#rule_key=" + encodeForUrl(ruleKey) + ")";
     }

@@ -78,6 +78,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.gitlab/java-gitlab-api -->
         <dependency>
             <groupId>org.gitlab</groupId>

@@ -43,9 +43,9 @@ public class MarkDownUtilsTest {
     }
 
     @Test
-    public void testSetupThrowsIllegalArgsIfSettingIsNull() {
+    public void testSetupThrowsExceptionIfSettingIsNull() {
         assertThatThrownBy(() -> new MarkDownUtils(null))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NullPointerException.class)
                 .hasMessage("settings must not be null");
     }
 
@@ -106,6 +106,23 @@ public class MarkDownUtilsTest {
     }
 
     @Test
+    public void testBuildsInlineThrowsExceptionIfParamNull() {
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://imagine.astory.com/SonarQube");
+
+        assertThatThrownBy(() -> markDownUtils.inlineIssue(null, "Exception hidden. HIDDEN! :O", "exception_hider"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("severity must not be null");
+
+        assertThatThrownBy(() -> markDownUtils.inlineIssue(Severity.CRITICAL, null, "exception_hider"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("message must not be null");
+
+        assertThatThrownBy(() -> markDownUtils.inlineIssue(Severity.BLOCKER, "Exception hidden. HIDDEN! :O", null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("ruleKey must not be null");
+    }
+
+    @Test
     public void testBuildsCorrectRuleLink() {
         final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.sonarz.io/kewl-sonar");
 
@@ -114,11 +131,11 @@ public class MarkDownUtilsTest {
     }
 
     @Test
-    public void testThrowsIllegalArgsIfRuleLinkKeyEmpty() {
+    public void testThrowsExceptionIfRuleLinkKeyEmpty() {
         final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.ilovebourbons.org/");
 
         assertThatThrownBy(() -> markDownUtils.getRuleLink(null))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NullPointerException.class)
                 .hasMessage("ruleKey must not be null");
     }
 
