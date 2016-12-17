@@ -28,6 +28,7 @@ import org.sonar.api.rule.Severity;
 import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
@@ -67,10 +68,15 @@ public class MarkDownUtils {
         }
     }
 
-    public static String encodeForUrl(String url) {
+    /**
+     * UTF-8 URL encode a value.
+     *
+     * @param url
+     * @return
+     */
+    public static String encodeForUrl(final String url) {
         try {
-            return URLEncoder.encode(url, "UTF-8");
-
+            return URLEncoder.encode(url, StandardCharsets.UTF_8.displayName());
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("Encoding not supported", e);
         }
