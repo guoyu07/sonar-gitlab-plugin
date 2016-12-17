@@ -32,7 +32,7 @@ public class CommitProjectBuilder extends ProjectBuilder {
     private final Settings settings;
     private final CommitFacade commitFacade;
 
-    public CommitProjectBuilder(GitLabPluginConfiguration gitLabPluginConfiguration,CommitFacade commitFacade, Settings settings) {
+    public CommitProjectBuilder(GitLabPluginConfiguration gitLabPluginConfiguration, CommitFacade commitFacade, Settings settings) {
         this.gitLabPluginConfiguration = gitLabPluginConfiguration;
         this.settings = settings;
         this.commitFacade = commitFacade;

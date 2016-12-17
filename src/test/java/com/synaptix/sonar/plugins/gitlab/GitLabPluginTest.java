@@ -25,9 +25,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GitLabPluginTest {
 
-  @Test
-  public void uselessTest() {
-    assertThat(new GitLabPlugin().getExtensions().size()).isGreaterThan(1);
-  }
+    @Test
+    public void uselessTest() {
+        assertThat(new GitLabPlugin().getExtensions().size()).isGreaterThan(1);
+    }
 
 }

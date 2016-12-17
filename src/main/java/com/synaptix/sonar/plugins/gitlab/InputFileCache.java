@@ -34,20 +34,20 @@ import java.util.Map;
 @BatchSide
 public class InputFileCache {
 
-  private final Map<String, InputFile> inputFileByKey = new HashMap<>();
+    private final Map<String, InputFile> inputFileByKey = new HashMap<>();
 
-  void put(String componentKey, InputFile inputFile) {
-    inputFileByKey.put(componentKey, inputFile);
-  }
+    void put(String componentKey, InputFile inputFile) {
+        inputFileByKey.put(componentKey, inputFile);
+    }
 
-  @CheckForNull
-  public InputFile byKey(String componentKey) {
-    return inputFileByKey.get(componentKey);
-  }
+    @CheckForNull
+    public InputFile byKey(String componentKey) {
+        return inputFileByKey.get(componentKey);
+    }
 
-  @Override
-  public String toString() {
-    return "GitLab Plugin InputFile Cache";
-  }
+    @Override
+    public String toString() {
+        return "GitLab Plugin InputFile Cache";
+    }
 
 }

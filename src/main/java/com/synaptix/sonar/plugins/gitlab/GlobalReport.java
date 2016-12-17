@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class GlobalReport {
 
-    private static final String[] SEVERITIES = { Severity.BLOCKER, Severity.CRITICAL, Severity.MAJOR, Severity.MINOR, Severity.INFO };
+    private static final String[] SEVERITIES = {Severity.BLOCKER, Severity.CRITICAL, Severity.MAJOR, Severity.MINOR, Severity.INFO};
 
     private final GitLabPluginConfiguration gitLabPluginConfiguration;
     private final MarkDownUtils markDownUtils;

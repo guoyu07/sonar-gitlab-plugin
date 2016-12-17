@@ -30,31 +30,31 @@ import org.sonar.api.resources.Project;
  */
 public class InputFileCacheSensor implements Sensor {
 
-  private final GitLabPluginConfiguration gitLabPluginConfiguration;
-  private final FileSystem fs;
-  private final InputFileCache inputFileCache;
+    private final GitLabPluginConfiguration gitLabPluginConfiguration;
+    private final FileSystem fs;
+    private final InputFileCache inputFileCache;
 
-  public InputFileCacheSensor(GitLabPluginConfiguration gitLabPluginConfiguration, FileSystem fs, InputFileCache inputFileCache) {
-    this.gitLabPluginConfiguration = gitLabPluginConfiguration;
-    this.fs = fs;
-    this.inputFileCache = inputFileCache;
-  }
-
-  @Override
-  public boolean shouldExecuteOnProject(Project project) {
-    return gitLabPluginConfiguration.isEnabled();
-  }
-
-  @Override
-  public void analyse(Project module, SensorContext context) {
-    for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
-      inputFileCache.put(context.getResource(inputFile).getEffectiveKey(), inputFile);
+    public InputFileCacheSensor(GitLabPluginConfiguration gitLabPluginConfiguration, FileSystem fs, InputFileCache inputFileCache) {
+        this.gitLabPluginConfiguration = gitLabPluginConfiguration;
+        this.fs = fs;
+        this.inputFileCache = inputFileCache;
     }
-  }
 
-  @Override
-  public String toString() {
-    return "GitLab Plugin InputFile Cache";
-  }
+    @Override
+    public boolean shouldExecuteOnProject(Project project) {
+        return gitLabPluginConfiguration.isEnabled();
+    }
+
+    @Override
+    public void analyse(Project module, SensorContext context) {
+        for (InputFile inputFile : fs.inputFiles(fs.predicates().all())) {
+            inputFileCache.put(context.getResource(inputFile).getEffectiveKey(), inputFile);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "GitLab Plugin InputFile Cache";
+    }
 
 }
