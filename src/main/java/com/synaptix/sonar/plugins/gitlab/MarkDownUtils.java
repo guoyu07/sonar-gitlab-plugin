@@ -49,6 +49,10 @@ public class MarkDownUtils {
             Severity.INFO, ":information_source:"
     );
 
+    private static final String TEMPLATE_GLOBAL_ISSUE = "%s %s (%s) %s";
+
+    private static final String TEMPLATE_GLOBAL_ISSUE_URL = "%s [%s](%s) %s";
+
     private final String ruleUrlPrefix;
 
     /**
@@ -132,16 +136,19 @@ public class MarkDownUtils {
      */
     public String globalIssue(final String severity, final String message, final String ruleKey,
                               final @Nullable String url, final String componentKey) {
-        String ruleLink = getRuleLink(ruleKey);
-        StringBuilder sb = new StringBuilder();
-        sb.append(getEmojiForSeverity(severity)).append(" ");
-        if (url != null) {
-            sb.append("[").append(message).append("]").append("(").append(url).append(")");
+        checkNotNull(severity, "severity must not be null");
+        checkNotNull(message, "message must not be null");
+        checkNotNull(ruleKey, "ruleKey must not be null");
+        checkNotNull(componentKey, "componentKey must not be null");
+
+        final String ruleLink = getRuleLink(ruleKey);
+        final String severityEmoji = getEmojiForSeverity(severity);
+
+        if (url == null) {
+            return String.format(TEMPLATE_GLOBAL_ISSUE, severityEmoji, message, componentKey, ruleLink);
         } else {
-            sb.append(message).append(" ").append("(").append(componentKey).append(")");
+            return String.format(TEMPLATE_GLOBAL_ISSUE_URL, severityEmoji, message, url, ruleLink);
         }
-        sb.append(" ").append(ruleLink);
-        return sb.toString();
     }
 
     /**

@@ -141,6 +141,31 @@ public class MarkDownUtilsTest {
     }
 
     @Test
+    public void testThrowsExceptionIfGlobalMarkdownParamNull() {
+        final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("https://open.dns.resolver");
+
+        assertThatThrownBy(() -> markDownUtils.globalIssue(null, "NO COMPUTRONS!!!", "magic_sash",
+                null, "com.major.mess"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("severity must not be null");
+
+        assertThatThrownBy(() -> markDownUtils.globalIssue(Severity.BLOCKER, null, "magic_sash",
+                null, "com.major.mess"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("message must not be null");
+
+        assertThatThrownBy(() -> markDownUtils.globalIssue(Severity.BLOCKER, "NO COMPUTRONS!!!", null,
+                null, "com.major.mess"))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("ruleKey must not be null");
+
+        assertThatThrownBy(() -> markDownUtils.globalIssue(Severity.BLOCKER, "NO COMPUTRONS!!!", "magic_sash",
+                null, null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("componentKey must not be null");
+    }
+
+    @Test
     public void testBuildsCorrectRuleLink() {
         final MarkDownUtils markDownUtils = buildUtilsWithBaseUrl("http://www.sonarz.io/kewl-sonar");
 
