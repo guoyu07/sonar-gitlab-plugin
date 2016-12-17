@@ -23,12 +23,14 @@ import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.BatchSide;
 import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.config.Settings;
+import org.sonar.api.internal.google.common.collect.ImmutableMap;
 import org.sonar.api.rule.Severity;
 
 import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
@@ -36,6 +38,14 @@ import java.nio.charset.StandardCharsets;
 public class MarkDownUtils {
 
     private static final String SONAR_HOST_URL = "sonar.host.url";
+
+    private static final Map<String, String> SEVERITY_EMOJI_MAPPINGS = ImmutableMap.of(
+            Severity.BLOCKER, ":no_entry:",
+            Severity.CRITICAL, ":no_entry_sign:",
+            Severity.MAJOR, ":warning:",
+            Severity.MINOR, ":arrow_down_small:",
+            Severity.INFO, ":information_source:"
+    );
 
     private final String ruleUrlPrefix;
 
@@ -82,21 +92,14 @@ public class MarkDownUtils {
         }
     }
 
-    public static String getEmojiForSeverity(String severity) {
-        switch (severity) {
-            case Severity.BLOCKER:
-                return ":no_entry:";
-            case Severity.CRITICAL:
-                return ":no_entry_sign:";
-            case Severity.MAJOR:
-                return ":warning:";
-            case Severity.MINOR:
-                return ":arrow_down_small:";
-            case Severity.INFO:
-                return ":information_source:";
-            default:
-                return ":grey_question:";
-        }
+    /**
+     * Returns the markdown emoji text for a violation severity.
+     *
+     * @param severity
+     * @return
+     */
+    public static String getEmojiForSeverity(final String severity) {
+        return SEVERITY_EMOJI_MAPPINGS.getOrDefault(severity, ":grey_question:");
     }
 
     public String inlineIssue(String severity, String message, String ruleKey) {

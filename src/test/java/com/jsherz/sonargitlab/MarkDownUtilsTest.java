@@ -1,10 +1,13 @@
 package com.jsherz.sonargitlab;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.synaptix.sonar.plugins.gitlab.MarkDownUtils;
 import org.junit.Test;
 import org.sonar.api.config.Settings;
+import org.sonar.api.rule.Severity;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,6 +69,32 @@ public class MarkDownUtilsTest {
         examples.forEach((before, expectedAfter) ->
                 assertThat(MarkDownUtils.encodeForUrl(before))
                         .isEqualTo(expectedAfter));
+    }
+
+    @Test
+    public void testKnownSeverityReturnsTheCorrectEmoji() {
+        final Map<String, String> examples = ImmutableMap.of(
+                Severity.BLOCKER, ":no_entry:",
+                Severity.CRITICAL, ":no_entry_sign:",
+                Severity.MAJOR, ":warning:",
+                Severity.MINOR, ":arrow_down_small:",
+                Severity.INFO, ":information_source:"
+        );
+
+        examples.forEach((example, expected) ->
+                assertThat(MarkDownUtils.getEmojiForSeverity(example))
+                        .isEqualTo(expected));
+    }
+
+    @Test
+    public void testUnknownSeverityReturnsQuestionMarkEmoji() {
+        final List<String> examples = ImmutableList.of(
+                "hummus", "Shoreditch", "beard", "origin"
+        );
+
+        examples.forEach((example) ->
+                assertThat(MarkDownUtils.getEmojiForSeverity(example))
+                        .isEqualTo(":grey_question:"));
     }
 
 }
