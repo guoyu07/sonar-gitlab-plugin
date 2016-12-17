@@ -3,23 +3,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.sonarsource.parent</groupId>
         <artifactId>parent</artifactId>
-        <version>28</version>
+        <version>37</version>
     </parent>
-    <groupId>com.synaptix</groupId>
+
+    <groupId>com.jsherz</groupId>
     <artifactId>sonar-gitlab-plugin</artifactId>
     <version>1.8.2-SNAPSHOT</version>
     <name>SonarQube :: GitLab Plugin</name>
     <description>GitLab Plugin for Reporting</description>
+
     <packaging>sonar-plugin</packaging>
     <inceptionYear>2016</inceptionYear>
+
     <organization>
         <name>Talanlabs</name>
         <url>http://www.talanlabs.com</url>
     </organization>
-    <url>https://gitlab.talanlabs.com/gabriel-allaigre/sonar-gitlab-plugin</url>
+
+    <url>https://gitlab.com/jSherz/sonar-gitlab-plugin</url>
+
     <properties>
         <java-gitlab-api.version>1.4.0</java-gitlab-api.version>
         <freemarker.version>2.3.23</freemarker.version>
@@ -27,51 +33,36 @@
         <license.mailto>gabriel.allaigre@talanlabs.com</license.mailto>
         <license.owner>Talanlabs</license.owner>
 
-        <sonar.version>5.5</sonar.version>
+        <sonar.version>5.6</sonar.version>
         <sonar.pluginName>GitLab</sonar.pluginName>
-        <sonar.pluginClass>com.synaptix.sonar.plugins.gitlab.GitLabPlugin</sonar.pluginClass>
+        <sonar.pluginClass>com.jsherz.sonar-gitlab-plugin.GitLabPlugin</sonar.pluginClass>
     </properties>
+
     <developers>
         <developer>
             <id>gabriel.allaigre@talanlabs.com</id>
             <name>Gabriel Allaigre</name>
             <email>gabriel.allaigre@talanlabs.com</email>
         </developer>
+
+        <developer>
+            <id>akrevenya@forsythe.com</id>
+            <name>Alex Krevenya</name>
+            <email>akrevenya@forsythe.com</email>
+        </developer>
+
+        <developer>
+            <id>james.sherwoodjones@gmail.com</id>
+            <name>James Sherwood-Jones</name>
+            <email>james.sherwoodjones@gmail.com</email>
+        </developer>
     </developers>
+
     <scm>
-        <url>https://gitlab.talanlabs.com/gabriel-allaigre/sonar-gitlab-plugin</url>
-        <connection>scm:git:https://gitlab.talanlabs.com/gabriel-allaigre/sonar-gitlab-plugin.git</connection>
+        <url>https://github.com/jSherz/sonar-gitlab-plugin</url>
+        <connection>scm:git:https://github.com/jSherz/sonar-gitlab-plugin.git</connection>
     </scm>
-    <ciManagement>
-        <system>gitlab-ci</system>
-        <url>https://gitlab.talanlabs.com/gabriel-allaigre/sonar-gitlab-plugin/builds</url>
-    </ciManagement>
-    <issueManagement>
-        <system>gitlab</system>
-        <url>https://gitlab.talanlabs.com/gabriel-allaigre/sonar-gitlab-plugin/issues</url>
-    </issueManagement>
-    <repositories>
-        <repository>
-            <id>talanlabs-releases-repository</id>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <url>http://nexus.talanlabs.com/content/groups/public_release</url>
-        </repository>
-        <repository>
-            <id>talanlabs-snapshots-repository</id>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <url>http://nexus.talanlabs.com/content/groups/public_snapshots</url>
-        </repository>
-    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.sonarsource.sonarqube</groupId>
@@ -79,6 +70,7 @@
             <version>${sonar.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
@@ -93,19 +85,6 @@
             <version>1.2.7</version>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>com.synaptix</groupId>
-            <artifactId>java-gitlab-api</artifactId>
-            <version>${java-gitlab-api.version}</version>
-        </dependency>
-        -->
-        <!--dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
-        </dependency-->
-
         <!-- unit tests -->
         <dependency>
             <groupId>org.codehaus.sonar</groupId>
@@ -113,24 +92,28 @@
             <version>5.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>1.7.1</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -138,14 +121,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>talanlabs-releases-repository</id>
-            <url>http://nexus.talanlabs.com/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>talanlabs-snapshots-repository</id>
-            <url>http://nexus.talanlabs.com/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
