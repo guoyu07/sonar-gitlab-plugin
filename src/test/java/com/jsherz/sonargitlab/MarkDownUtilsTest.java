@@ -4,6 +4,7 @@ import com.synaptix.sonar.plugins.gitlab.MarkDownUtils;
 import org.junit.Test;
 import org.sonar.api.config.Settings;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 
 
@@ -32,6 +33,22 @@ public class MarkDownUtilsTest {
         assertEquals("host URL should be used if no serverBaseURL given",
                 "[:blue_book:](http://www.badurl.org/coding_rules#rule_key=foobar)",
                 markDownUtils.getRuleLink("foobar"));
+    }
+
+    @Test
+    public void testSetupThrowsIllegalArgsIfSettingIsNull() {
+        assertThatThrownBy(() -> new MarkDownUtils(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("settings must not be null");
+    }
+
+    @Test
+    public void testThrowsIllegalArgsIfNoBaseUrlProvided() {
+        final Settings settings = new Settings();
+
+        assertThatThrownBy(() -> new MarkDownUtils(settings))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("A base URL must be provided with the setting sonar.core.serverBaseURL or sonar.host.url");
     }
 
 }

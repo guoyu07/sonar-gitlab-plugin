@@ -29,23 +29,42 @@ import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
 @BatchSide
 public class MarkDownUtils {
 
+    private static final String SONAR_HOST_URL = "sonar.host.url";
+
     private final String ruleUrlPrefix;
 
+    /**
+     * Sets up these utilities.
+     * <p>
+     * If sonar.core.serverBaseURL is configured, it will be used over the sonar host URL.
+     *
+     * @param settings
+     */
     public MarkDownUtils(final Settings settings) {
-        // If server base URL was not configured in SQ server then is is better to take URL configured on batch side
-        String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ?
-                settings.getString(CoreProperties.SERVER_BASE_URL) :
-                settings.getString("sonar.host.url");
-
-        if (!baseUrl.endsWith("/")) {
-            baseUrl += "/";
+        if (settings == null) {
+            throw new IllegalArgumentException("settings must not be null");
         }
 
-        this.ruleUrlPrefix = baseUrl;
+        // If server base URL was not configured in SQ server then is is better to take URL configured on batch side
+        final String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ?
+                settings.getString(CoreProperties.SERVER_BASE_URL) :
+                settings.getString(SONAR_HOST_URL);
+
+        if (baseUrl == null) {
+            throw new IllegalArgumentException(String.format("A base URL must be provided with the setting %s or %s",
+                    CoreProperties.SERVER_BASE_URL,
+                    SONAR_HOST_URL
+            ));
+        } else if (baseUrl.endsWith("/")) {
+            this.ruleUrlPrefix = baseUrl;
+        } else {
+            this.ruleUrlPrefix = baseUrl + "/";
+        }
     }
 
     public static String encodeForUrl(String url) {
