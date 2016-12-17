@@ -35,16 +35,20 @@ public class MarkDownUtils {
 
     private final String ruleUrlPrefix;
 
-    public MarkDownUtils(Settings settings) {
+    public MarkDownUtils(final Settings settings) {
         // If server base URL was not configured in SQ server then is is better to take URL configured on batch side
-        String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ? settings.getString(CoreProperties.SERVER_BASE_URL) : settings.getString("sonar.host.url");
+        String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ?
+                settings.getString(CoreProperties.SERVER_BASE_URL) :
+                settings.getString("sonar.host.url");
+
         if (!baseUrl.endsWith("/")) {
             baseUrl += "/";
         }
+
         this.ruleUrlPrefix = baseUrl;
     }
 
-    static String encodeForUrl(String url) {
+    public static String encodeForUrl(String url) {
         try {
             return URLEncoder.encode(url, "UTF-8");
 
@@ -94,7 +98,7 @@ public class MarkDownUtils {
         return sb.toString();
     }
 
-    String getRuleLink(String ruleKey) {
+    public String getRuleLink(String ruleKey) {
         return "[:blue_book:](" + ruleUrlPrefix + "coding_rules#rule_key=" + encodeForUrl(ruleKey) + ")";
     }
 

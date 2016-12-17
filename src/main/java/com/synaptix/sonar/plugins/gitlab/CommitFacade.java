@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 @BatchSide
 public class CommitFacade {
 
-    static final String COMMIT_CONTEXT = "sonarqube";
+    private static final String COMMIT_CONTEXT = "sonarqube";
     private static final Logger logger = Loggers.get(CommitFacade.class.getName());
     private final GitLabPluginConfiguration config;
     private File gitBaseDir;
@@ -171,7 +171,7 @@ public class CommitFacade {
 
     public void createOrUpdateReviewComment(InputFile inputFile, Integer line, String body) {
         String fullpath = getPath(inputFile);
-        //System.out.println("Review : "+fullpath+" line : "+line);
+
         try {
             gitLabAPI.createCommitComment(gitLabProject.getId(), config.commitSHA(), body, fullpath, line.toString(), "new");
         } catch (IOException e) {
