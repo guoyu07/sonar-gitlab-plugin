@@ -1,4 +1,5 @@
 Copyright 2016 - Talanlabs - http://www.talanlabs.com
+
 Copyright 2016 - James Sherwood-Jones - https://jsherz.com
 
 This program is free software; you can redistribute it and/or
