@@ -42,14 +42,15 @@ public class GitLabPlugin implements Plugin {
     protected static final String GITLAB_COMMENT_NO_ISSUE = "sonar.gitlab.comment_no_issue";
 
     private static final String CATEGORY = "gitlab";
-    private static final String SUBCATEGORY = "reporting";
+    private static final String INSTANCE_SUBCATEGORY = "instance";
+    private static final String REPORTING_SUBCATEGORY = "reporting";
 
     private static final List<PropertyDefinition> DEFINITIONS = ImmutableList.of(
             PropertyDefinition.builder(GITLAB_URL)
                     .name("GitLab URL")
                     .description("Full URL to GitLab instance.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(INSTANCE_SUBCATEGORY)
                     .defaultValue("https://gitlab.com")
                     .index(1)
                     .build(),
@@ -57,14 +58,14 @@ public class GitLabPlugin implements Plugin {
                     .name("GitLab user token")
                     .description("Token for the user that SonarQube will comment as.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(INSTANCE_SUBCATEGORY)
                     .index(2)
                     .build(),
             PropertyDefinition.builder(GITLAB_MAX_GLOBAL_ISSUES)
                     .name("Max issues in global comment")
                     .description("The maximum number of issues to display in the overall global issue comment.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
                     .type(PropertyType.INTEGER)
                     .defaultValue(String.valueOf(10))
                     .index(3)
@@ -74,7 +75,7 @@ public class GitLabPlugin implements Plugin {
                     .description("The unique id, path with namespace, name with namespace, web url, ssh url or" +
                             "http url of the current project that is being analysed.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
                     .index(4)
                     .onlyOnQualifiers(Qualifiers.PROJECT)
                     .build(),
@@ -82,7 +83,7 @@ public class GitLabPlugin implements Plugin {
                     .name("Commit SHA")
                     .description("The commit revision that is being analysed.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
                     .index(5)
                     .hidden()
                     .build(),
@@ -90,7 +91,7 @@ public class GitLabPlugin implements Plugin {
                     .name("Ref name")
                     .description("The commit revision that is being analysed.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
                     .index(6)
                     .hidden()
                     .build(),
@@ -98,7 +99,7 @@ public class GitLabPlugin implements Plugin {
                     .name("Ignore unrelated files")
                     .description("Ignore issues on files not modified by the commit.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
                     .type(PropertyType.BOOLEAN)
                     .defaultValue(String.valueOf(false))
                     .index(7)
@@ -108,7 +109,7 @@ public class GitLabPlugin implements Plugin {
                     .name("Comment if no new issues")
                     .description("Add a comment even when there are no new issues.")
                     .category(CATEGORY)
-                    .subCategory(SUBCATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
                     .type(PropertyType.BOOLEAN)
                     .defaultValue(String.valueOf(false))
                     .index(8)
