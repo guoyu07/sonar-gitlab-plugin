@@ -80,4 +80,9 @@ public class GitLabPluginConfiguration {
         return settings.getBoolean(GitLabPlugin.GITLAB_COMMENT_NO_ISSUE);
     }
 
+    @CheckForNull
+    public String customBuilderName() {
+        return settings.getString(GitLabPlugin.GITLAB_CUSTOM_BUILDER_NAME);
+    }
+
 }

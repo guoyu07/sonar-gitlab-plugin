@@ -38,6 +38,7 @@ public class GitLabPlugin implements Plugin {
     protected static final String GITLAB_REF_NAME = "sonar.gitlab.ref_name";
     protected static final String GITLAB_IGNORE_FILE = "sonar.gitlab.ignore_file";
     protected static final String GITLAB_COMMENT_NO_ISSUE = "sonar.gitlab.comment_no_issue";
+    protected static final String GITLAB_CUSTOM_BUILDER_NAME = "sonar.gitlab.custom_builder_name";
 
     private static final String CATEGORY = "gitlab";
     private static final String INSTANCE_SUBCATEGORY = "instance";
@@ -101,7 +102,6 @@ public class GitLabPlugin implements Plugin {
                     .type(PropertyType.BOOLEAN)
                     .defaultValue(String.valueOf(false))
                     .index(7)
-                    .hidden()
                     .build(),
             PropertyDefinition.builder(GITLAB_COMMENT_NO_ISSUE)
                     .name("Comment if no new issues")
@@ -111,6 +111,14 @@ public class GitLabPlugin implements Plugin {
                     .type(PropertyType.BOOLEAN)
                     .defaultValue(String.valueOf(false))
                     .index(8)
+                    .build(),
+            PropertyDefinition.builder(GITLAB_CUSTOM_BUILDER_NAME)
+                    .name("Custom builder name")
+                    .description("Replaces the \"sonarqube\" name when displaying & updating a build in GitLab.")
+                    .category(CATEGORY)
+                    .subCategory(REPORTING_SUBCATEGORY)
+                    .type(PropertyType.TEXT)
+                    .index(9)
                     .build()
     );
 

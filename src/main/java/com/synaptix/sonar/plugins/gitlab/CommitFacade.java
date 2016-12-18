@@ -46,7 +46,6 @@ import java.util.regex.Pattern;
 @BatchSide
 public class CommitFacade {
 
-    private static final String COMMIT_CONTEXT = "sonarqube";
     private static final Logger logger = Loggers.get(CommitFacade.class.getName());
     private final GitLabPluginConfiguration config;
     private File gitBaseDir;
@@ -147,7 +146,8 @@ public class CommitFacade {
 
     public void createOrUpdateSonarQubeStatus(String status, String statusDescription) {
         try {
-            gitLabAPI.createCommitStatus(gitLabProject, config.commitSHA(), status, config.refName(), COMMIT_CONTEXT, null, statusDescription);
+            gitLabAPI.createCommitStatus(gitLabProject, config.commitSHA(), status, config.refName(),
+                    config.customBuilderName(), null, statusDescription);
         } catch (IOException e) {
             throw new IllegalStateException("Unable to update commit status", e);
         }
