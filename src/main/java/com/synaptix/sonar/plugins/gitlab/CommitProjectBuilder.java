@@ -22,17 +22,22 @@ package com.synaptix.sonar.plugins.gitlab;
 import org.sonar.api.batch.bootstrap.ProjectBuilder;
 import org.sonar.api.config.Settings;
 
+
 /**
- * Trigger load of pull request metadata at the very beginning of SQ analysis. Also
- * set "in progress" status on the pull request.
+ * Trigger load of pull request metadata at the very beginning of analysis.
+ * <p>
+ * Sets build status of the commit / merge request to "pending".
  */
 public class CommitProjectBuilder extends ProjectBuilder {
 
     private final GitLabPluginConfiguration gitLabPluginConfiguration;
+
     private final Settings settings;
+
     private final CommitFacade commitFacade;
 
-    public CommitProjectBuilder(GitLabPluginConfiguration gitLabPluginConfiguration, CommitFacade commitFacade, Settings settings) {
+    public CommitProjectBuilder(final GitLabPluginConfiguration gitLabPluginConfiguration, final CommitFacade commitFacade,
+                                final Settings settings) {
         this.gitLabPluginConfiguration = gitLabPluginConfiguration;
         this.settings = settings;
         this.commitFacade = commitFacade;
@@ -40,12 +45,11 @@ public class CommitProjectBuilder extends ProjectBuilder {
 
     @Override
     public void build(Context context) {
-        if (!gitLabPluginConfiguration.isEnabled()) {
-            return;
+        if (gitLabPluginConfiguration.isEnabled()) {
+            commitFacade.init(context.projectReactor().getRoot().getBaseDir());
+
+            commitFacade.createOrUpdateSonarQubeStatus("pending", "SonarQube analysis in progress");
         }
-
-        commitFacade.init(context.projectReactor().getRoot().getBaseDir());
-
-        commitFacade.createOrUpdateSonarQubeStatus("pending", "SonarQube analysis in progress");
     }
+
 }
