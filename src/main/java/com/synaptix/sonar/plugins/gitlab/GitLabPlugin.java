@@ -37,8 +37,6 @@ public class GitLabPlugin implements Plugin {
     protected static final String GITLAB_COMMIT_SHA = "sonar.gitlab.commit_sha";
     protected static final String GITLAB_REF_NAME = "sonar.gitlab.ref_name";
     protected static final String GITLAB_IGNORE_FILE = "sonar.gitlab.ignore_file";
-    protected static final String GITLAB_GLOBAL_TEMPLATE = "sonar.gitlab.global_template";
-    protected static final String GITLAB_INLINE_TEMPLATE = "sonar.gitlab.inline_template";
     protected static final String GITLAB_COMMENT_NO_ISSUE = "sonar.gitlab.comment_no_issue";
 
     private static final String CATEGORY = "gitlab";
