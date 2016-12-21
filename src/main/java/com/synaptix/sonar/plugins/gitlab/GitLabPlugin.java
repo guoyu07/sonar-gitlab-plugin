@@ -19,13 +19,12 @@
  */
 package com.synaptix.sonar.plugins.gitlab;
 
-import com.google.common.collect.ImmutableList;
 import org.sonar.api.Plugin;
 import org.sonar.api.PropertyType;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
 
-import java.util.List;
+import java.util.Arrays;
 
 
 public class GitLabPlugin implements Plugin {
@@ -44,7 +43,7 @@ public class GitLabPlugin implements Plugin {
     private static final String INSTANCE_SUBCATEGORY = "instance";
     private static final String REPORTING_SUBCATEGORY = "reporting";
 
-    private static final List<PropertyDefinition> DEFINITIONS = ImmutableList.of(
+    private static final PropertyDefinition[] DEFINITIONS = new PropertyDefinition[]{
             PropertyDefinition.builder(GITLAB_URL)
                     .name("GitLab URL")
                     .description("Full URL to GitLab instance.")
@@ -120,13 +119,13 @@ public class GitLabPlugin implements Plugin {
                     .type(PropertyType.TEXT)
                     .index(9)
                     .build()
-    );
+    };
 
     @Override
     public void define(Context context) {
         context.addExtensions(CommitIssuePostJob.class, GitLabPluginConfiguration.class, CommitProjectBuilder.class,
                 CommitFacade.class, InputFileCacheSensor.class, InputFileCache.class, MarkDownUtils.class);
-        context.addExtensions(DEFINITIONS);
+        context.addExtensions(Arrays.asList(DEFINITIONS));
     }
 
 }

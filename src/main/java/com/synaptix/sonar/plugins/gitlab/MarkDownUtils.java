@@ -23,16 +23,14 @@ import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.BatchSide;
 import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.config.Settings;
-import org.sonar.api.internal.google.common.collect.ImmutableMap;
 import org.sonar.api.rule.Severity;
 
 import javax.annotation.Nullable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 
 @InstantiationStrategy(InstantiationStrategy.PER_BATCH)
@@ -41,19 +39,21 @@ public class MarkDownUtils {
 
     private static final String SONAR_HOST_URL = "sonar.host.url";
 
-    private static final Map<String, String> SEVERITY_EMOJI_MAPPINGS = ImmutableMap.of(
-            Severity.BLOCKER, ":no_entry:",
-            Severity.CRITICAL, ":no_entry_sign:",
-            Severity.MAJOR, ":warning:",
-            Severity.MINOR, ":arrow_down_small:",
-            Severity.INFO, ":information_source:"
-    );
+    private static final Map<String, String> SEVERITY_EMOJI_MAPPINGS = new HashMap<>();
 
     private static final String TEMPLATE_GLOBAL_ISSUE = "%s %s (%s) %s";
 
     private static final String TEMPLATE_GLOBAL_ISSUE_URL = "%s [%s](%s) %s";
 
     private final String ruleUrlPrefix;
+
+    static {
+        SEVERITY_EMOJI_MAPPINGS.put(Severity.BLOCKER, ":no_entry:");
+        SEVERITY_EMOJI_MAPPINGS.put(Severity.CRITICAL, ":no_entry_sign:");
+        SEVERITY_EMOJI_MAPPINGS.put(Severity.MAJOR, ":warning:");
+        SEVERITY_EMOJI_MAPPINGS.put(Severity.MINOR, ":arrow_down_small:");
+        SEVERITY_EMOJI_MAPPINGS.put(Severity.INFO, ":information_source:");
+    }
 
     /**
      * Sets up these utilities.
@@ -161,6 +161,12 @@ public class MarkDownUtils {
         checkNotNull(ruleKey, "ruleKey must not be null");
 
         return "[:blue_book:](" + ruleUrlPrefix + "coding_rules#rule_key=" + encodeForUrl(ruleKey) + ")";
+    }
+
+    private void checkNotNull(final Object value, final String description) {
+        if (value == null) {
+            throw new NullPointerException(description);
+        }
     }
 
 }
