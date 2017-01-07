@@ -1,0 +1,9 @@
+machine:
+  timezone:
+    Etc/UTC
+  java:
+    version: openjdk8
+  test:
+    post:
+      - cp target/surefire-reports/*.xml $CIRCLE_TEST_REPORTS
+      - cp target/sonar-gitlab-plugin-*-SNAPSHOT.jar $CIRCLE_ARTIFACTS
