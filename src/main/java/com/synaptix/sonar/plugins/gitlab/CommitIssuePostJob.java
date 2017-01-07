@@ -19,20 +19,22 @@
  */
 package com.synaptix.sonar.plugins.gitlab;
 
-import org.sonar.api.batch.CheckProject;
-import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.postjob.PostJob;
+import org.sonar.api.batch.postjob.PostJobContext;
+import org.sonar.api.batch.postjob.PostJobDescriptor;
 import org.sonar.api.issue.Issue;
 import org.sonar.api.issue.ProjectIssues;
-import org.sonar.api.resources.Project;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * Compute comments to be added on the commit.
  */
-public class CommitIssuePostJob implements org.sonar.api.batch.PostJob, CheckProject {
+public class CommitIssuePostJob implements PostJob {
 
     private final GitLabPluginConfiguration gitLabPluginConfiguration;
     private final CommitFacade commitFacade;
@@ -49,15 +51,18 @@ public class CommitIssuePostJob implements org.sonar.api.batch.PostJob, CheckPro
     }
 
     @Override
-    public boolean shouldExecuteOnProject(Project project) {
-        return gitLabPluginConfiguration.isEnabled();
+    @ParametersAreNonnullByDefault
+    public void describe(final PostJobDescriptor postJobDescriptor) {
+        // TODO: Convert to l10n lookup
+        postJobDescriptor.name("GitLab Commit Issue Publisher");
     }
 
     @Override
-    public void executeOn(Project project, SensorContext context) {
-        GlobalReport report = new GlobalReport(gitLabPluginConfiguration, markDownUtils);
+    @ParametersAreNonnullByDefault
+    public void execute(final PostJobContext postJobContext) {
+        final GlobalReport report = new GlobalReport(gitLabPluginConfiguration, markDownUtils);
 
-        Map<InputFile, Map<Integer, StringBuilder>> commentsToBeAddedByLine = processIssues(report);
+        final Map<InputFile, Map<Integer, StringBuilder>> commentsToBeAddedByLine = processIssues(report);
 
         updateReviewComments(commentsToBeAddedByLine);
 
@@ -66,11 +71,6 @@ public class CommitIssuePostJob implements org.sonar.api.batch.PostJob, CheckPro
         }
 
         commitFacade.createOrUpdateSonarQubeStatus(report.getStatus(), report.getStatusDescription());
-    }
-
-    @Override
-    public String toString() {
-        return "GitLab Commit Issue Publisher";
     }
 
     private Map<InputFile, Map<Integer, StringBuilder>> processIssues(GlobalReport report) {
@@ -88,18 +88,17 @@ public class CommitIssuePostJob implements org.sonar.api.batch.PostJob, CheckPro
             }
             boolean reportedInline = false;
             if (inputFile != null && issueLine != null) {
-                int line = issueLine.intValue();
-                if (commitFacade.hasFileLine(inputFile, line)) {
+                if (commitFacade.hasFileLine(inputFile, issueLine)) {
                     String message = issue.message();
                     String ruleKey = issue.ruleKey().toString();
                     if (!commentToBeAddedByFileAndByLine.containsKey(inputFile)) {
-                        commentToBeAddedByFileAndByLine.put(inputFile, new HashMap<Integer, StringBuilder>());
+                        commentToBeAddedByFileAndByLine.put(inputFile, new HashMap<>());
                     }
                     Map<Integer, StringBuilder> commentsByLine = commentToBeAddedByFileAndByLine.get(inputFile);
-                    if (!commentsByLine.containsKey(line)) {
-                        commentsByLine.put(line, new StringBuilder());
+                    if (!commentsByLine.containsKey(issueLine)) {
+                        commentsByLine.put(issueLine, new StringBuilder());
                     }
-                    commentsByLine.get(line).append(markDownUtils.inlineIssue(severity, message, ruleKey)).append("\n");
+                    commentsByLine.get(issueLine).append(markDownUtils.inlineIssue(severity, message, ruleKey)).append("\n");
                     reportedInline = true;
                 }
             }
@@ -117,4 +116,5 @@ public class CommitIssuePostJob implements org.sonar.api.batch.PostJob, CheckPro
             }
         }
     }
+
 }
