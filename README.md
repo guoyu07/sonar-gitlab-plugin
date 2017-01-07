@@ -1,7 +1,5 @@
-Sonar GitLab Plugin
+Sonar GitLab Plugin [![CircleCI](https://circleci.com/gh/jSherz/sonar-gitlab-plugin/tree/master.svg?style=svg)](https://circleci.com/gh/jSherz/sonar-gitlab-plugin/tree/master)
 ===================
-
-[![CircleCI](https://circleci.com/gh/jSherz/sonar-gitlab-plugin/tree/master.svg?style=svg)](https://circleci.com/gh/jSherz/sonar-gitlab-plugin/tree/master)
 
 See https://github.com/SonarCommunity/sonar-github
 
